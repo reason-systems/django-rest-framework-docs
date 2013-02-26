@@ -28,7 +28,8 @@ class DocumentationGenerator():
     def get_url_patterns(self):
 
         urls = __import__(settings.ROOT_URLCONF)
-        patterns = urls.urls.urlpatterns
+        patterns = urls.urlpatterns
+        
 
         api_url_patterns = []
         patterns = self._flatten_patterns_tree(patterns)
