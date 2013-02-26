@@ -65,8 +65,13 @@
 			.table-fields {
 			    width:90%
 			}
+			.table-fields .comments {
+                font-size: smaller;
+                width: 20em;
+			}
 			.table-fields td {
 			    padding:2px 0;
+                border-bottom: 1px dotted #888;
 			}
 			#list-api {
 				width: 90%;
@@ -169,10 +174,11 @@
 								    <tr>
 								        <th>Name</th>
 								        <th>Type</th>
-								        <th>Read-only</th>
+								        <!--th>Read-only</th>
 								        <th>Default</th>
 								        <th>Min</th>
-								        <th>Max</th>
+								        <th>Max</th-->
+								        <th>Comments</th>
 								    </tr>
 								    {% for field in api.fields %}
 								    <tr>
@@ -183,7 +189,7 @@
                                         <td>
                                             {{details.type}}
                                         </td>
-                                        <td>
+                                        <!--td>
                                             {% if details.read_only %}x{% endif %}
                                         </td>
 
@@ -201,6 +207,11 @@
                                             {% if details.max_length %}
                                             {{ details.max_length }}
                                             {% endif %}
+                                        </td-->
+								        <td class="comments">
+                                          {% if details.comments %}
+                                          {{ details.comments }}
+                                          {% endif %}
                                         </td>
                                         {% endfor %}
 								    </tr>

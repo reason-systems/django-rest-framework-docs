@@ -38,7 +38,6 @@ class DocumentationGenerator():
             try:
                 class_instance = pattern.callback.cls_instance
                 parents = type(class_instance).mro()
-
                 if APIView in parents:
                     api_url_patterns.append(pattern)
             except:
@@ -226,6 +225,15 @@ class DocumentationGenerator():
                     pass
                 try:
                     field_data['min_length'] = field.min_length
+                except:
+                    pass
+                try:
+                    def _get_doc(field):
+                        if field.source:
+                            return getattr(serializer.Meta.model, field.source).__doc__
+                        if field.method_name:
+                            return getattr(serializer, field.method_name).__doc__
+                    field_data['comments'] = _get_doc(field)
                 except:
                     pass
                 data.append({name: field_data})
