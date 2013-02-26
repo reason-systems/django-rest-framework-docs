@@ -38,7 +38,6 @@ class DocumentationGenerator():
             try:
                 class_instance = pattern.callback.cls_instance
                 parents = type(class_instance).mro()
-
                 if APIView in parents:
                     api_url_patterns.append(pattern)
             except:
@@ -170,7 +169,8 @@ class DocumentationGenerator():
             cleaned = endpoint.regex.pattern
             cleaned = re.sub('\([^<]*<', '{', cleaned)
             cleaned = re.sub('>[^\)]*\)', '_id}', cleaned)
-            cleaned = re.sub('^\^|/\??\$$', '', cleaned)
+            #cleaned = re.sub('^\^|/\??\$$', '', cleaned)
+            cleaned = re.sub('^\^', '', cleaned)
             cleaned = re.sub('\$$', '', cleaned)
             return cleaned
         except:
@@ -226,6 +226,18 @@ class DocumentationGenerator():
                     pass
                 try:
                     field_data['min_length'] = field.min_length
+                except:
+                    pass
+                try:
+                    def _get_doc(field):
+                        if field.source:
+                            return getattr(serializer.Meta.model, field.source).__doc__
+                        elif hasattr(field, "method_name") and field.method_name:
+                            return getattr(serializer, field.method_name).__doc__
+                        else:
+                            docs = getattr(serializer.Meta, "field_docs", {})
+                            return docs.get(name)
+                    field_data['comments'] = _get_doc(field)
                 except:
                     pass
                 data.append({name: field_data})
